@@ -1,0 +1,43 @@
+<div class="login" [@routeAnimation]="state">
+
+    <div class="formbox">
+
+        <span title="header">QGame 代理系统</span>
+
+        <div class="username">
+            <!-- <nz-input-group [nzSuffix]="usernameInput" nzPrefixIcon="anticon anticon-user"> -->
+            <nz-input-group [nzSuffix]="usernameInput">
+                <input type="text" nz-input placeholder="请输入您的用户名" [(ngModel)]="username">
+            </nz-input-group>
+            <ng-template #usernameInput>
+                <!-- <i class="anticon anticon-close-circle" (click)="username=null" *ngIf="username"></i> -->
+            </ng-template>
+        </div>
+
+        <div class="password">
+            <!-- <nz-input-group [nzSuffix]="passwordInput" nzPrefixIcon="anticon anticon-lock"> -->
+            <nz-input-group [nzSuffix]="passwordInput">
+                <input type="password" nz-input placeholder="请输入您的密码" [(ngModel)]="password">
+            </nz-input-group>
+
+            <ng-template #passwordInput>
+                <!-- <i class="anticon anticon-close-circle" (click)="password=null" *ngIf="password"></i> -->
+            </ng-template>
+        </div>
+
+        <div class="remember">
+            <label nz-checkbox [(ngModel)]="rememberPassword">记住密码</label>
+        </div>
+
+        <div class="captcha">
+            <input nz-input placeholder="请输入验证码" [(ngModel)]="captcha">
+            <button nz-button nzType="dashed" (click)="getCaptcha()">{{showCaptcha}}</button>
+        </div>
+
+        <div class="submit">
+            <button nz-button nzType="primary" nzGhost (click)="login()">登录</button>
+        </div>
+
+    </div>
+
+</div>

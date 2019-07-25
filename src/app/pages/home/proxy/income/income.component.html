@@ -1,0 +1,83 @@
+<div [@routeAnimation]="state" class="income">
+    <ng-template #header>
+        <div class="header">
+            <div>账号: {{ currentIncome.game_user.role_name || "无" }}</div>
+            <div>昵称: {{ currentIncome.proxy_nick }}</div>
+            <div>ID: {{ currentIncome.id }}</div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <div class="footer">
+            <div>0 表示该代理没有当前档位</div>
+            <div>-1 表示无限</div>
+        </div>
+    </ng-template>
+    <div class="goback">
+        <button nz-button nzType="default" (click)="backToProxy()">返回代理</button>
+        <!-- <button nz-button nzType="default" (click)="reset()">重置界面</button> -->
+        <!-- <button nz-button nzType="primary" (click)="onSave()" [disabled]="loading">保存修改</button> -->
+    </div>
+
+    <nz-table #borderedTable nzBordered [nzShowPagination]="false" [nzFrontPagination]="false" [nzFooter]="footer"
+        [nzTitle]="header" [nzData]="proxyRule.situation">
+        <tbody>
+            <tr>
+                <td>档位</td>
+                <td colspan="2">
+                    <nz-dropdown>
+                        <button nz-button nz-dropdown style="width:90px;"><i
+                                class="anticon anticon-down"></i>{{ _currentIncome }} %</button>
+                        <ul nz-menu>
+                            <ng-container *ngFor="let item of proxyRule.situation; let i = index">
+                                <li nz-menu-item (click)="changeIncomeValueConfirm(_currentIncome,item.max,i)"
+                                    *ngIf="item.max < proxyRule.income">
+                                    <div>{{ item.max }}%</div>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </nz-dropdown>
+                </td>
+                <td colspan="2">请按照分成档位填写</td>
+            </tr>
+            <tr>
+                <td>分成档位</td>
+                <td>我的配额</td>
+                <td>我的剩余</td>
+                <td>代理配额</td>
+                <td>代理剩余</td>
+            </tr>
+            <ng-container *ngFor="let data of borderedTable.data; let i = index">
+                <tr *ngIf="data.max < proxyRule.income">
+                    <td>{{ data.min }}{{ data.min === data.max ? "" : "~" + data.max }}%</td>
+                    <td>{{ data.max_number === -1 ? "无限" : data.max_number }}</td>
+                    <td>{{ data.left_number === -1 && data.max_number === -1 ? "无限" : data.left_number }}</td>
+                    <td>
+                        <ng-container *ngIf="currentIncome.proxy_rule.situation[i].max_number >= 0; else elseTemplate">
+                            {{
+                                    currentIncome.proxy_rule.situation[i].max_number === -1
+                                        ? "无限"
+                                        : currentIncome.proxy_rule.situation[i].max_number
+                                }}
+                            &nbsp;&nbsp;&nbsp;
+                            <button nz-button nzType="default"
+                                (click)="showModal(i);max_numberBeforeChange=currentIncome.proxy_rule.situation[i].max_number"
+                                *ngIf="data.max < _currentIncome">点击调整</button>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            {{ currentIncome.proxy_rule.situation[i].max_number === -1 ? "无限" : currentIncome.proxy_rule.situation[i].max_number }}
+                        </ng-template>
+                    </td>
+                    <td>
+                        {{ currentIncome.proxy_rule.situation[i].left_number === -1 ? "无限" : currentIncome.proxy_rule.situation[i].left_number }}
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </nz-table>
+
+    <nz-modal [(nzVisible)]="isVisible" [nzClosable]="false" [nzTitle]="null" [nzFooter]=""
+        (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk();onSave()">
+        <input nz-input placeholder="请输入配额数量" [(ngModel)]="inputNumber" class="input-number" />
+    </nz-modal>
+</div>

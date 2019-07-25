@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>代理系统</title>
+        <!-- <base href="/"> -->
+        <script>
+            document.write('<base href="' + document.location + '" />');
+        </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,maximum-scale=1,user-scalable=no" />
+
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    </head>
+
+    <body>
+        <app-root></app-root>
+    </body>
+</html>
+<script>
+    window.onload = () => {
+        let height = document.documentElement.clientHeight;
+
+        document.body.style.height = height + "px";
+
+        window.onresize = e => {
+            document.body.style.height = height + "px";
+        };
+    };
+</script>

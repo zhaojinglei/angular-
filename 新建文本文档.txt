@@ -1,0 +1,7 @@
+npm install 
+
+ng serve
+
+npm install -g @angular/cli
+´úÀíID=895049935,ÃÜÂë=123456
+http://localhost:4200/?host=http://proxy.0717996.com#/home/index

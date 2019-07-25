@@ -1,0 +1,123 @@
+<div [@routeAnimation]="state" class="money" #target>
+    <div class="date-select">
+        <div class="money-date">
+            <nz-date-picker
+                [nzFormat]="'yyyy-MM-dd'"
+                [(ngModel)]="startDate"
+                (ngModelChange)="onStartDateChange($event)"
+                style="margin: 5px;"
+            ></nz-date-picker>
+            <nz-date-picker
+                [nzFormat]="'yyyy-MM-dd'"
+                [(ngModel)]="endDate"
+                (ngModelChange)="onEndDateChange($event)"
+                style="margin: 5px;"
+            ></nz-date-picker>
+        </div>
+        <div class="money-button">
+            <!-- <nz-select
+                [(ngModel)]="currentSearchName"
+                [nzPlaceHolder]="currentSearchName"
+                (ngModelChange)="changeSearchType($event)"
+                style="margin: 5px;width: 30%;"
+            >
+                <nz-option [nzValue]="searchType.name" [nzLabel]="searchType.name" *ngFor="let searchType of searchTypes"> </nz-option>
+            </nz-select> -->
+
+            <select class="money-select diy-select" [(ngModel)]="currentSearchName" (change)="changeSearchType($event)">
+                <ng-container *ngFor="let searchType of searchTypes">
+                    <option>{{ searchType.name }}</option>
+                </ng-container>
+            </select>
+
+            <input nz-input placeholder="请输入角色ID" style="margin: 5px;width: 33%;" [(ngModel)]="input" />
+            <button nz-button nzType="default" (click)="search()" style="margin: 5px;width: 30%;"><i class="anticon anticon-search"></i>查询</button>
+        </div>
+        <div class="money-count">
+            <div style="margin: 8px;font-size: 13px;">
+                个人总收益:
+                {{
+                    parseNumber(dateProxyUserIncome?.statement_proxy_income) +
+                    parseNumber(dateProxyUserIncome?.statement_income) +
+                    parseNumber(dateGameUserIncome?.statement_income)
+                        ? (
+                              parseNumber(dateProxyUserIncome?.statement_proxy_income) +
+                              parseNumber(dateProxyUserIncome?.statement_income) +
+                              parseNumber(dateGameUserIncome?.statement_income)
+                          ).toFixed(4)
+                        : 0
+                }}
+            </div>
+            <div style="margin: 8px;font-size: 13px;">
+                团队总流水:
+                {{
+                    parseNumber(dateProxyUserIncome?.statement_proxy_total) +
+                    parseNumber(dateProxyUserIncome?.statement_total) +
+                    parseNumber(dateGameUserIncome?.statement_total)
+                        ? (
+                              parseNumber(dateProxyUserIncome?.statement_proxy_total) +
+                              parseNumber(dateProxyUserIncome?.statement_total) +
+                              parseNumber(dateGameUserIncome?.statement_total)
+                          ).toFixed(2)
+                        : 0
+                }}
+            </div>
+            <div style="margin: 8px;font-size: 13px;">
+                记录:
+                {{
+                    parseNumber(dateProxyUserIncome?.statement_proxy_times) +
+                        parseNumber(dateProxyUserIncome?.statement_times) +
+                        parseNumber(dateGameUserIncome?.statement_times) || 0
+                }}
+            </div>
+        </div>
+    </div>
+
+    <div class="money-list-box">
+        <nz-collapse>
+            <nz-collapse-panel
+                *ngFor="let panel of panels; let i = index"
+                [nzHeader]="panel.order ? header : dateComponent"
+                [nzActive]="false"
+                [nzDisabled]="false"
+                class="money-list"
+                [ngStyle]="{ background: '#f7f7f7' }"
+                [nzShowArrow]="false"
+            >
+                <ng-template #header>
+                    <div class="money-header">
+                        <div>{{ i + 1 }}</div>
+                        <div>{{ panel.child_nick }}</div>
+                        <div>流水:{{ panel.statement.final_pay.toFixed(1) }}</div>
+                        <div [ngStyle]="{ color: panel.child_type === 'game_user' ? 'black' : 'red' }">收益:{{ panel.income.toFixed(4) }}</div>
+                    </div>
+                </ng-template>
+                <ng-template #dateComponent>
+                    <div class="find-over">{{ panel?.date }} 数据查找完毕</div>
+                </ng-template>
+                <div class="money-list-content" *ngIf="panel.order">
+                    <div>ID:{{ panel.child_id }}</div>
+                    <div>游戏:{{ panel.statement.game_name }}</div>
+
+                    <div>税收:{{ panel.statement.tax.toFixed(2) }}</div>
+                    <div>
+                        分成:{{
+                            panel.child_type === "game_user" ? panel.income_percent + "%" : panel.income_percent - panel.child_income_percent + "%"
+                        }}
+                    </div>
+                    <div style="width: 100%">{{ format(panel.statement.create_time * 1000) }}</div>
+                </div>
+            </nz-collapse-panel>
+            <button
+                nz-button
+                nzType="primary"
+                [disabled]="!isMore"
+                (click)="loadOne()"
+                style="width:100%;height:40px;border:none;border-radius: 0;"
+                [nzLoading]="isLoadingOne"
+            >
+                {{ loadingTips }}
+            </button>
+        </nz-collapse>
+    </div>
+</div>

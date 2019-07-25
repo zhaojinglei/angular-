@@ -1,0 +1,22 @@
+<nz-layout class="home">
+	<div class="header">
+		<!-- <i class="anticon anticon-home"></i> -->
+		<div class="left" (click)="backToHall()">
+			返回游戏
+		</div>
+		<div class="title">{{getTitle(buttomSelect)}}</div>
+		<!-- <div class="right" (click)="loginout()">注销</div> -->
+		<div class="right"></div>
+		<!-- <i class="anticon anticon-question"></i> -->
+	</div>
+	<nz-content style="height: calc(100vh - 80px);">
+		<div class="home-content" [@routeAnimation]="state">
+			<router-outlet></router-outlet>
+		</div>
+	</nz-content>
+	<nz-radio-group [(ngModel)]="buttomSelect" class="footer">
+		<label *ngFor="let buttomTitle of buttomTitles;let i = index" nz-radio-button nzValue="{{buttomTitle.path}}" (click)="selectIndex(i)">
+			{{buttomTitle.title}}
+		</label>
+	</nz-radio-group>
+</nz-layout>

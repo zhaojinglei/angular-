@@ -1,0 +1,134 @@
+<div [@routeAnimation]="state" class="proxy">
+    <div class="date-select">
+        <div class="money-date">
+            <nz-date-picker
+                [nzFormat]="'yyyy-MM-dd'"
+                [(ngModel)]="startDate"
+                (ngModelChange)="onStartDateChange($event)"
+                style="margin: 5px;"
+            ></nz-date-picker>
+            <nz-date-picker
+                [nzFormat]="'yyyy-MM-dd'"
+                [(ngModel)]="endDate"
+                (ngModelChange)="onEndDateChange($event)"
+                style="margin: 5px;"
+            ></nz-date-picker>
+        </div>
+        <div class="proxy-button">
+            <select class="proxy-select diy-select" [(ngModel)]="currentSearchName" (change)="changeSearchType($event)">
+                <ng-container *ngFor="let searchType of searchTypes">
+                    <option>{{ searchType.name }}</option>
+                </ng-container>
+            </select>
+
+            <input nz-input placeholder="请输入查询信息" style=" width:33%" [(ngModel)]="input" />
+            <button nz-button nzType="default" (click)="search()"><i class="anticon anticon-search"></i>搜索</button>
+        </div>
+    </div>
+    <div class="proxy-list-box">
+        <div class="proxy-list-header">
+            <div>昵称</div>
+            <div (click)="sortByIncome()" style="text-decoration: underline;">档位</div>
+            <div (click)="sortByTeamNumber()" style="text-decoration: underline;">团队人数</div>
+            <div>收益</div>
+            <div></div>
+        </div>
+        <div>
+            <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="show" class="skeleton">
+                <div class="proxy-item" *ngFor="let proxy of proxys">
+                    <div>{{ proxy.proxy_nick }}</div>
+                    <div>{{ proxy.proxy_rule.income }}%</div>
+                    <div (click)="searchProxyUserChildren(proxy.id, proxy.user_number)" style="text-decoration: underline;">
+                        {{ proxy.proxy_number + proxy.user_number + 1 }}
+                    </div>
+                    <div>
+                        <button nz-button nzType="default" (click)="showDetails(proxy.id)" style="width: 100%">
+                            <!-- {{
+                                ((parseNumber(proxyUserinductions[proxy.id]?.statement_proxy_income) +
+                                    parseNumber(proxyUserinductions[proxy.id]?.statement_income) +
+                                    parseNumber(gameUserinductions[proxy.id]?.statement_income)) /
+                                    proxy?.income) *
+                                (proxyUser?.income - proxy?.income)
+                                    ? (
+                                          ((parseNumber(proxyUserinductions[proxy.id]?.statement_proxy_income) +
+                                              parseNumber(proxyUserinductions[proxy.id]?.statement_income) +
+                                              parseNumber(gameUserinductions[proxy.id]?.statement_income)) /
+                                              proxy?.income) *
+                                          (proxyUser?.income - proxy?.income)
+                                      ).toFixed(4)
+                                    : 0
+                            }} -->
+                            {{ proxyUserinductions[proxy.id]?.statement_contribution?.toFixed(4) || 0 }}
+                        </button>
+                        <!-- 给上级带来的收益 (自己的收益/自己的收益比)*(上级的收益比-自己的收益比) -->
+                    </div>
+                    <div>
+                        <button nz-button nzType="primary" nzGhost nzSize="small" style="border:none" (click)="income(proxy.id)">调整</button>
+                    </div>
+                </div>
+            </nz-skeleton>
+        </div>
+        <div class="proxy-list-footer">
+            <button nz-button nzType="default" style="margin:0 10px;" (click)="searchProxyUserChildrenBack()">返回</button>
+            <nz-button-group>
+                <button nz-button nzType="default" [disabled]="!less" (click)="prev()"><i class="anticon anticon-left"></i>上一页</button>
+                <label nz-radio-button nzType="primary" nzValue="default">{{ currentPage }}/{{ allowPage }}</label>
+                <button nz-button nzType="default" [disabled]="!more" (click)="next()">下一页<i class="anticon anticon-right"></i></button>
+            </nz-button-group>
+        </div>
+    </div>
+</div>
+
+<nz-drawer [nzClosable]="false" [nzVisible]="darwerVisible" [nzPlacement]="placement" (nzOnClose)="close()" [nzHeight]="200">
+    <div class="drawer">
+        <div>
+            <div>ID</div>
+            <div>{{ selectProxyUser.id }}</div>
+        </div>
+        <div>
+            <div>账号</div>
+            <div>{{ (selectProxyUser.game_user ? selectProxyUser.game_user.role_name : "") || "无" }}</div>
+        </div>
+        <div>
+            <div>注册用户</div>
+            <div>{{ parseNumber(selectProxyUser?.user_number) + parseNumber(selectProxyUser.proxy_number) }}</div>
+        </div>
+        <div>
+            <div>付费用户</div>
+            <!-- 上级 + 直属 + 自己 -->
+            <div>
+                {{
+                    parseNumber(selectProxyUserInduction?.pay_proxy_user_number) +
+                        parseNumber(selectProxyUserInduction?.pay_user_number) +
+                        (parseNumber(selectGameUserInduction?.pay_times) > 0 ? 1 : 0) || 0
+                }}
+            </div>
+        </div>
+        <div>
+            <div>VIP用户</div>
+            <div>
+                {{
+                    parseNumber(selectProxyUserInduction?.statement_proxy_active_user_number) +
+                        parseNumber(selectProxyUserInduction?.statement_active_user_number) +
+                        (parseNumber(selectGameUserInduction?.statement_total) < 10000 ? 0 : 1) || 0
+                }}
+            </div>
+        </div>
+        <div>
+            <div>总流水</div>
+            <div>
+                {{
+                    parseNumber(selectProxyUserInduction?.statement_proxy_total) +
+                    parseNumber(selectProxyUserInduction?.statement_total) +
+                    parseNumber(selectGameUserInduction?.statement_total)
+                        ? (
+                              parseNumber(selectProxyUserInduction?.statement_proxy_total) +
+                              parseNumber(selectProxyUserInduction?.statement_total) +
+                              parseNumber(selectGameUserInduction?.statement_total)
+                          ).toFixed(4)
+                        : 0
+                }}
+            </div>
+        </div>
+    </div>
+</nz-drawer>

@@ -1,0 +1,23 @@
+{
+    "statement_proxy_income": 0.369,
+    "statement_proxy_total": 82,
+    "statement_proxy_times": 41,
+    "pay_proxy_total": 210,
+    "pay_proxy_times": 3,
+    "pay_proxy_user_number": 1,
+    "exchange_proxy_total": 200,
+    "exchange_proxy_times": 2,
+    "exchange_proxy_user_number": 1,
+    "statement_times": 0,
+    "statement_total": 0,
+    "statement_income": 0,
+    "exchange_times": 0,
+    "exchange_total": 0,
+    "exchange_user_number": 0,
+    "pay_times": 0,
+    "pay_total": 0,
+    "pay_user_number": 0,
+    "new_game_user": 0,
+    "new_proxy_user": 0,
+    "id": 741477350
+}

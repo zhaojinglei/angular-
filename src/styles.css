@@ -1,0 +1,93 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+    box-sizing: border-box;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: inherit;
+}
+
+body {
+    background: rgb(241, 229, 229);
+    padding: 0 !important;
+}
+
+.ant-collapse-content-box {
+    padding: 0 !important;
+}
+
+.ant-collapse>.ant-collapse-item.ant-collapse-no-arrow>.ant-collapse-header {
+    padding-left: 0px;
+}
+
+.ant-collapse>.ant-collapse-item>.ant-collapse-header .arrow {
+    left: 10px;
+}
+
+.ant-collapse>.ant-collapse-item>.ant-collapse-header {
+    /* padding-left: 10px; */
+    line-height: 20px;
+    padding: 10px 0 10px 40px;
+}
+
+.ant-table-tbody>tr>td,
+.ant-table-thead>tr>th {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.ant-modal-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qrcode {
+    height: 100%;
+}
+
+
+.qrcode img {
+    height: 100%;
+}
+
+.show-qrcode {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.show-qrcode img {
+    width: 100%;
+}
+
+.ant-message {
+    font-size: 14px;
+    color: rgba(0, 0, 0, .65);
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    z-index: 1010;
+    width: 100%;
+    top: 16px;
+    left: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.diy-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    background: transparent;
+    border: 1px solid #d9d9d9;
+    line-height: 30px;
+    text-indent: 0.5rem;
+}

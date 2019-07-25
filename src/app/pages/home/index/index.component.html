@@ -1,0 +1,213 @@
+<nz-carousel [nzEffect]="effect" [nzEnableSwipe] *ngIf="isPosterShow" [nzDots]="false">
+
+    <div nz-carousel-content *ngFor="let index of array index as i">
+        <i nz-icon nzType="close-circle" nzTheme="outline" (click)="isPosterShow=!isPosterShow"></i>
+        <!-- <img src="../../../../assets/x.jpg" alt=""> -->
+        <div class="canvas" id="canva{{i+1}}" >
+            <img src={{index}} alt="">
+            <div class="img qrc">
+                <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="showURL + '/' + defaultUniqueId + '/' + noRegin"
+                    qrc-class="qrcode" qrc-errorCorrectionLevel="S"></ngx-qrcode>
+            </div>
+        </div>
+        <i nz-icon nzType="download" nzTheme="outline" (click)="takeScreenshot(i+1)"></i>
+    </div>
+</nz-carousel>
+<div [@routeAnimation]="state" class="index">
+    <div class="qr-code">
+        <div class="qr-code-img">
+            <div class="tips">免注册链接({{ getRuleItemByUniqueId(noReginUniqueId).max }}%)</div>
+            <div class="img">
+                <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="showURL + '/' + noReginUniqueId + '/' + noRegin"
+                    qrc-class="qrcode" qrc-errorCorrectionLevel="S"
+                    (click)="showShowImg(showURL + '/' + noReginUniqueId + '/' + noRegin)">
+                </ngx-qrcode>
+            </div>
+        </div>
+        <div class="qr-code-button">
+            <button nz-button nzType="primary" (click)="copy(showURL + '/' + noReginUniqueId + '/' + noRegin)">
+                复制推广链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="open(noRegin)"
+                [disabled]="proxyUser?.proxy_pid === 0 || proxyRule?.income === 0">
+                更多推广链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="this.isPosterShow=!this.isPosterShow"
+                [disabled]="proxyUser?.proxy_pid === 0 || proxyRule?.income === 0">
+                代理推广模板
+            </button>
+        </div>
+    </div>
+
+    <div class="qr-code">
+        <div class="qr-code-img">
+            <div class="tips">注册链接({{ getRuleItemByUniqueId(isReginUniqueId).max }}%)</div>
+            <div class="img">
+                <ngx-qrcode
+                    [qrc-element-type]="'url'"
+                    [qrc-value]="showURL + '/' + isReginUniqueId + '/' + isRegin"
+                    qrc-class="qrcode"
+                    qrc-errorCorrectionLevel="S"
+                    (click)="showShowImg(showURL + '/' + isReginUniqueId + '/' + isRegin)"
+                >
+                </ngx-qrcode>
+            </div>
+        </div>
+        <div class="qr-code-button">
+            <button nz-button nzType="primary" (click)="copy(showURL + '/' + isReginUniqueId + '/' + isRegin)">
+                复制推广链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="open(isRegin)" [disabled]="proxyUser?.proxy_pid === 0 || proxyRule?.income === 0">
+                更多推广链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="openCreateAccount()">
+                人工创建账号
+            </button>
+        </div>
+    </div>
+
+    <!-- <div class="qr-code">
+        <div class="qr-code-img">
+            <div class="tips" (click)="toggleOS()" style="text-decoration: underline;">
+                {{ selectOS === "android" ? "安卓" : "苹果" }}下载(切换{{ selectOS === "android" ? "苹果" : "安卓" }})
+            </div>
+            <div class="img">
+                <ngx-qrcode
+                    [qrc-element-type]="'url'"
+                    [qrc-value]="apkDownUrl"
+                    qrc-class="qrcode"
+                    qrc-errorCorrectionLevel="S"
+                    (click)="showShowImg(apkDownUrl)"
+                >
+                </ngx-qrcode>
+            </div>
+        </div>
+        <div class="qr-code-button">
+            <button nz-button nzType="primary" (click)="copy(apkDownUrl)">
+                复制下载链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="openCreateAccount()">
+                人工创建账号
+            </button>
+        </div>
+    </div>  -->
+
+    <div class="qr-code">
+        <div class="qr-code-img">
+            <div class="tips">网页版链接({{ getRuleItemByUniqueId(pcReginUniqueId).max }}%)</div>
+            <div class="img">
+                <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="showURL + '/' + pcReginUniqueId + '/' + pcRegin"
+                    qrc-class="qrcode" qrc-errorCorrectionLevel="S"
+                    (click)="showShowImg(showURL + '/' + pcReginUniqueId + '/' + pcRegin)">
+                </ngx-qrcode>
+            </div>
+        </div>
+        <div class="qr-code-button">
+            <button nz-button nzType="primary" (click)="copy(showURL + '/' + pcReginUniqueId + '/' + pcRegin)">
+                复制推广链接
+            </button>
+            <button nz-button nzType="primary" nzGhost (click)="open(pcRegin)"
+                [disabled]="proxyUser?.proxy_pid === 0 || proxyRule?.income === 0">
+                更多推广链接
+            </button>
+        </div>
+    </div>
+
+    <div class="proxy-income">
+        <div>
+            <div>账户余额</div>
+            <i>{{ proxyUser.balance?.toFixed(4) }}</i>
+        </div>
+        <div>
+            <div>今日收益</div>
+            <i>{{
+                !(induction?.statement_income + induction?.statement_proxy_income)
+                    ? 0
+                    : (induction?.statement_income + induction?.statement_proxy_income).toFixed(4)
+            }}</i>
+        </div>
+        <div>
+            <div>团队人数</div>
+            <i>{{ parseNumber(proxyUser?.proxy_number) + parseNumber(proxyUser?.user_number) + 1 }}</i>
+        </div>
+
+        <!-- <div>
+            <div>玩家人数</div>
+            <i>{{ proxyUser?.user_number || 0 }}</i>
+        </div> -->
+        <div>
+            <div>我的档位</div>
+            <i>{{ proxyRule?.income }}%</i>
+        </div>
+        <!-- <div>
+            <div>今日非直属新增</div>
+            <i>{{ proxyRule?.income }}%</i>
+        </div>
+        <div>
+            <div>今日直属新增</div>
+            <i>{{ proxyRule?.income }}%</i>
+        </div> -->
+        <div>
+            <button nz-button nzType="primary" nzGhost (click)="showModal()">提现余额到游戏</button>
+        </div>
+    </div>
+</div>
+
+<nz-drawer [nzClosable]="false" [nzVisible]="darwerVisible" [nzPlacement]="placement" (nzOnClose)="close()"
+    [nzHeight]="200">
+    <div class="drawer">
+        <ng-container *ngFor="let item of proxyRule?.situation">
+            <button (click)="change(item.unique_id, reginStatus)" nz-button nzType="danger" nzGhost
+                *ngIf="item.max <= 30 && proxyRule?.income > item.max" style="width:40%;margin: 5px;">
+                设定 {{ item.max }}% 链接
+            </button>
+        </ng-container>
+    </div>
+</nz-drawer>
+
+<nz-drawer [nzClosable]="false" [nzVisible]="isCreateAccount" [nzPlacement]="'top'" (nzOnClose)="closeCreateAccount()"
+    [nzHeight]="350">
+    <div class="drawer">
+        <div class="auto-regin">
+            <button nz-button nzType="dashed" style="margin-bottom: 10px;">人工创建账号</button>
+
+            <div class="regin-box">
+                <nz-input-group nzAddOnBefore="账号" class="regin-group">
+                    <input type="text" nz-input [(ngModel)]="roleName" placeholder="请输入用户名" />
+                </nz-input-group>
+                <!-- <nz-input-group nzAddOnBefore="昵称" class="regin-group">
+                    <input type="text" nz-input [(ngModel)]="nickName" placeholder="请输入昵称" />
+                </nz-input-group> -->
+                <nz-input-group nzAddOnBefore="密码" class="regin-group">
+                    <input type="text" nz-input [(ngModel)]="passWord" placeholder="请输入密码" />
+                </nz-input-group>
+                <nz-input-group nzAddOnBefore="确认" class="regin-group">
+                    <input type="text" nz-input [(ngModel)]="passWordRepeat" placeholder="请再次输入密码" />
+                </nz-input-group>
+                <div class="select-unique-id">
+                    <button nz-button nzType="default" class="select-unique-id-left">档位</button>
+
+                    <select class="select-unique-id-right diy-select" [(ngModel)]="selectUnqued"
+                        [disabled]="nzDisabled">
+                        <ng-container *ngFor="let item of proxyRule?.situation; let i = index">
+                            <option [value]="item.min" *ngIf="item.left_number === -1 && item.min < proxyUser.income">
+                                {{ item.min }} %</option>
+                        </ng-container>
+                    </select>
+                </div>
+
+                <button nz-button nzType="primary" class="regin-submit" (click)="autoRegin()">创建账号</button>
+            </div>
+        </div>
+    </div>
+</nz-drawer>
+
+<nz-modal [(nzVisible)]="modalVisible" [nzClosable]="false" [nzTitle]="null" [nzFooter]="" (nzOnCancel)="closeModal()"
+    (nzOnOk)="sureModal()">
+    <input nz-input placeholder="请输入提现金额" [(ngModel)]="inputMoney" class="input-number" />
+</nz-modal>
+
+<div class="show-img-boxxxx" (click)="hideShowImg()" *ngIf="isShowImg">
+    <ngx-qrcode [qrc-element-type]="'url'" [qrc-value]="showImgUrl" qrc-class="show-qrcode"
+        qrc-errorCorrectionLevel="S"> </ngx-qrcode>
+</div>

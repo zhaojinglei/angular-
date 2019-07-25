@@ -1,0 +1,117 @@
+.money {
+    .date-select {
+        height: 120px;
+        box-shadow: 0px 0px 8px #aaaaaa;
+        margin: 5px auto;
+        width: 96%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+
+        .money-date {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 33%;
+            width: 100%;
+
+            >nz-date-picker {
+                width: 40%;
+            }
+        }
+
+        .money-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 33%;
+            width: 100%;
+
+            .money-select {
+                background: #fff;
+                margin: 5px;
+                width: 30%;
+            }
+        }
+
+        .money-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 33%;
+            width: 100%;
+        }
+    }
+
+    .money-list-box {
+        box-shadow: 0px 0px 8px #aaaaaa;
+        margin: 5px auto;
+        width: 96%;
+        height: calc(100vh - 120px - 80px - 20px);
+        overflow-y: auto;
+
+        .money-list {
+            background: rgb(242, 240, 240);
+
+            .money-list-content {
+                padding: 0.3rem;
+            }
+
+            .find-over {
+                color: #533a3a;
+            }
+
+            .money-header {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                >div {
+                    font-size: 13px;
+                }
+
+                >div:nth-child(1) {
+                    width: 15%; // text-indent: 0.2rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                >div:nth-child(2) {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 25%; // text-indent: 1rem;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                >div:nth-child(3) {
+                    width: 30%;
+                    text-align: left;
+                }
+
+                >div:nth-child(4) {
+                    width: 30%;
+                    text-align: left;
+                }
+            }
+
+            .money-list-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+
+                >div {
+                    width: 50%;
+                    text-align: left;
+                    text-indent: 1rem;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+}

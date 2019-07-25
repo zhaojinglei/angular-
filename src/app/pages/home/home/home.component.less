@@ -1,0 +1,85 @@
+:host {
+    text-align: center;
+}
+
+:host ::ng-deep .ant-layout-header,
+:host ::ng-deep .ant-layout-footer {
+    // background: #7dbcea;
+    color: #fff;
+}
+
+:host ::ng-deep .ant-layout-footer {
+    line-height: 1.5;
+}
+
+:host ::ng-deep .ant-layout-sider {
+    // background: #3ba0e9;
+    color: #fff;
+    line-height: 120px;
+}
+
+// :host ::ng-deep .ant-layout-content {
+//     // background: rgba(16, 142, 233, 1);
+//     // color: #fff;
+//     min-height: 120px;
+//     line-height: 120px;
+// }
+:host> ::ng-deep .ant-layout {
+    margin-bottom: 48px;
+}
+
+:host ::ng-deep .ant-layout:last-child {
+    margin: 0;
+}
+
+.home {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: rgb(242, 240, 245);
+
+    .header {
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .left {
+            width: 20%;
+            height: 40px;
+            line-height: 40px;
+            font-size: 12px;
+        }
+
+        .title {
+            width: 60%;
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .right {
+            width: 20%;
+            height: 40px;
+            line-height: 40px;
+            font-size: 13px;
+        }
+    }
+
+    .home-content {
+        // height: calc(100vh - 80px);
+    }
+
+    .footer {
+        height: 40px;
+        line-height: 40px;
+
+        >label {
+            width: 25%;
+            height: 40px;
+            line-height: 40px;
+            background: rgb(242, 240, 245);
+            text-decoration: underline;
+        }
+    }
+}
